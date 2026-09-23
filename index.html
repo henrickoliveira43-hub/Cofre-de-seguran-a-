@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="h-full bg-slate-950">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Cofre Seguro - Proteção e Privacidade</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -16,19 +16,27 @@
             font-family: 'Inter', sans-serif;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* Suporte para notch de smartphones modernos (iOS / Android) */
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
         /* Efeito de Vidro Fosco (Glassmorphism) */
         .glass {
-            background: rgba(18, 24, 38, 0.75);
+            background: rgba(18, 24, 38, 0.85);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.08);
         }
 
         .glass-card {
             background: rgba(30, 41, 59, 0.6);
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
@@ -52,7 +60,7 @@
             animation: pulseGlow 3s infinite ease-in-out;
         }
 
-        /* Ocultação de Scrollbars */
+        /* Ocultação de Scrollbars mantendo a rolagem ativa */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -61,10 +69,10 @@
             scrollbar-width: none;
         }
 
-        /* Animação do teclado PIN */
-        .pin-btn:active {
-            transform: scale(0.92);
-            background-color: rgba(59, 130, 246, 0.3);
+        /* Feedback tátil para botões */
+        .pin-btn:active, .btn-touch:active {
+            transform: scale(0.94);
+            background-color: rgba(59, 130, 246, 0.25);
         }
     </style>
 
@@ -88,25 +96,25 @@
         }
     </script>
 </head>
-<body class="bg-vault-dark text-slate-100 min-h-screen overflow-x-hidden selection:bg-blue-600 selection:text-white">
+<body class="bg-slate-950 text-slate-100 min-h-full flex flex-col justify-center items-center selection:bg-blue-600 selection:text-white">
 
-    <!-- APP CONTAINER -->
-    <div id="app" class="relative max-w-md mx-auto min-h-screen flex flex-col justify-between shadow-2xl bg-[#0B0F17] overflow-hidden border-x border-slate-800/50">
+    <!-- APP CONTAINER (Responsivo: Mobile First + Suporte a Tablet/Desktop) -->
+    <div id="app" class="relative w-full max-w-md md:max-w-xl lg:max-w-2xl min-h-screen md:min-h-[850px] md:h-[90vh] md:my-auto md:rounded-3xl flex flex-col justify-between shadow-2xl bg-[#0B0F17] overflow-hidden border-x border-slate-800/50 md:border">
 
         <!-- ================================================== -->
         <!-- 1. TELA DE ABERTURA / SPLASH SCREEN                -->
         <!-- ================================================== -->
-        <section id="splash-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-b from-slate-950 via-[#0B0F17] to-slate-900 max-w-md mx-auto">
+        <section id="splash-screen" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-b from-slate-950 via-[#0B0F17] to-slate-900 p-6 text-center">
             <div class="relative flex items-center justify-center mb-6">
-                <div class="absolute w-40 h-40 bg-blue-600/20 rounded-full blur-2xl glow-effect"></div>
-                <div id="vault-icon-container" class="relative z-10 p-6 rounded-3xl bg-slate-900/80 border border-slate-700/50 shadow-2xl">
-                    <i data-lucide="shield-lock" class="w-20 h-20 text-blue-500 animate-vault"></i>
+                <div class="absolute w-36 h-36 md:w-48 md:h-48 bg-blue-600/20 rounded-full blur-2xl glow-effect"></div>
+                <div id="vault-icon-container" class="relative z-10 p-5 md:p-6 rounded-3xl bg-slate-900/80 border border-slate-700/50 shadow-2xl">
+                    <i data-lucide="shield-lock" class="w-16 h-16 md:w-20 md:h-20 text-blue-500 animate-vault"></i>
                 </div>
             </div>
-            <h1 class="text-3xl font-bold tracking-tight text-white mb-2">Cofre Seguro</h1>
-            <p class="text-sm text-slate-400 font-light">Seu ambiente de privacidade absoluta</p>
+            <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-white mb-2">Cofre Seguro</h1>
+            <p class="text-xs md:text-sm text-slate-400 font-light">Seu ambiente de privacidade absoluta</p>
             
-            <div class="absolute bottom-10 flex items-center gap-2 text-xs text-slate-500">
+            <div class="absolute bottom-8 flex items-center gap-2 text-[11px] md:text-xs text-slate-500">
                 <i data-lucide="lock" class="w-3.5 h-3.5"></i>
                 <span>Criptografia Local de Ponta a Ponta</span>
             </div>
@@ -115,13 +123,13 @@
         <!-- ================================================== -->
         <!-- 2. TELA DE AUTENTICAÇÃO (PIN & BIOMETRIA)          -->
         <!-- ================================================== -->
-        <section id="auth-screen" class="hidden flex-1 flex flex-col justify-between p-6 z-40 bg-gradient-to-b from-[#0B0F17] to-slate-950">
+        <section id="auth-screen" class="hidden flex-1 flex flex-col justify-between p-6 z-40 bg-gradient-to-b from-[#0B0F17] to-slate-950 overflow-y-auto no-scrollbar">
             <!-- Cabeçalho Auth -->
-            <div class="text-center pt-6">
-                <div class="w-16 h-16 bg-blue-600/10 rounded-2xl border border-blue-500/20 flex items-center justify-center mx-auto mb-3 text-blue-400">
-                    <i data-lucide="lock" class="w-8 h-8"></i>
+            <div class="text-center pt-4 md:pt-8">
+                <div class="w-14 h-14 md:w-16 md:h-16 bg-blue-600/10 rounded-2xl border border-blue-500/20 flex items-center justify-center mx-auto mb-3 text-blue-400">
+                    <i data-lucide="lock" class="w-7 h-7 md:w-8 md:h-8"></i>
                 </div>
-                <h2 class="text-2xl font-bold text-white mb-1">Acessar Cofre</h2>
+                <h2 class="text-xl md:text-2xl font-bold text-white mb-1">Acessar Cofre</h2>
                 <p class="text-xs text-slate-400">Digite seu PIN de segurança</p>
 
                 <!-- Dica da Senha Provisória -->
@@ -132,36 +140,36 @@
 
                 <!-- Indicadores do PIN (4 Dígitos) -->
                 <div class="flex justify-center items-center gap-4 mt-6" id="pin-dots">
-                    <div class="w-4 h-4 rounded-full border-2 border-slate-600 transition-all duration-200"></div>
-                    <div class="w-4 h-4 rounded-full border-2 border-slate-600 transition-all duration-200"></div>
-                    <div class="w-4 h-4 rounded-full border-2 border-slate-600 transition-all duration-200"></div>
-                    <div class="w-4 h-4 rounded-full border-2 border-slate-600 transition-all duration-200"></div>
+                    <div class="w-3.5 h-3.5 md:w-4 md:h-4 rounded-full border-2 border-slate-600 transition-all duration-200"></div>
+                    <div class="w-3.5 h-3.5 md:w-4 md:h-4 rounded-full border-2 border-slate-600 transition-all duration-200"></div>
+                    <div class="w-3.5 h-3.5 md:w-4 md:h-4 rounded-full border-2 border-slate-600 transition-all duration-200"></div>
+                    <div class="w-3.5 h-3.5 md:w-4 md:h-4 rounded-full border-2 border-slate-600 transition-all duration-200"></div>
                 </div>
                 <p id="auth-error" class="text-xs text-red-400 mt-2 h-4 opacity-0 transition-opacity font-medium">PIN Incorreto!</p>
             </div>
 
             <!-- Teclado Numérico -->
-            <div class="mb-6">
-                <div class="grid grid-cols-3 gap-4 max-w-xs mx-auto mb-5">
-                    <button onclick="appendPin('1')" class="pin-btn h-16 rounded-2xl glass-card text-2xl font-semibold text-white flex items-center justify-center transition">1</button>
-                    <button onclick="appendPin('2')" class="pin-btn h-16 rounded-2xl glass-card text-2xl font-semibold text-white flex items-center justify-center transition">2</button>
-                    <button onclick="appendPin('3')" class="pin-btn h-16 rounded-2xl glass-card text-2xl font-semibold text-white flex items-center justify-center transition">3</button>
-                    <button onclick="appendPin('4')" class="pin-btn h-16 rounded-2xl glass-card text-2xl font-semibold text-white flex items-center justify-center transition">4</button>
-                    <button onclick="appendPin('5')" class="pin-btn h-16 rounded-2xl glass-card text-2xl font-semibold text-white flex items-center justify-center transition">5</button>
-                    <button onclick="appendPin('6')" class="pin-btn h-16 rounded-2xl glass-card text-2xl font-semibold text-white flex items-center justify-center transition">6</button>
-                    <button onclick="appendPin('7')" class="pin-btn h-16 rounded-2xl glass-card text-2xl font-semibold text-white flex items-center justify-center transition">7</button>
-                    <button onclick="appendPin('8')" class="pin-btn h-16 rounded-2xl glass-card text-2xl font-semibold text-white flex items-center justify-center transition">8</button>
-                    <button onclick="appendPin('9')" class="pin-btn h-16 rounded-2xl glass-card text-2xl font-semibold text-white flex items-center justify-center transition">9</button>
-                    <button onclick="triggerBiometrics()" class="pin-btn h-16 rounded-2xl glass-card text-blue-400 flex items-center justify-center transition" title="Biometria">
-                        <i data-lucide="fingerprint" class="w-7 h-7"></i>
+            <div class="my-auto py-4">
+                <div class="grid grid-cols-3 gap-3 md:gap-4 max-w-xs mx-auto mb-4">
+                    <button onclick="appendPin('1')" class="pin-btn h-14 md:h-16 rounded-2xl glass-card text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">1</button>
+                    <button onclick="appendPin('2')" class="pin-btn h-14 md:h-16 rounded-2xl glass-card text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">2</button>
+                    <button onclick="appendPin('3')" class="pin-btn h-14 md:h-16 rounded-2xl glass-card text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">3</button>
+                    <button onclick="appendPin('4')" class="pin-btn h-14 md:h-16 rounded-2xl glass-card text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">4</button>
+                    <button onclick="appendPin('5')" class="pin-btn h-14 md:h-16 rounded-2xl glass-card text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">5</button>
+                    <button onclick="appendPin('6')" class="pin-btn h-14 md:h-16 rounded-2xl glass-card text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">6</button>
+                    <button onclick="appendPin('7')" class="pin-btn h-14 md:h-16 rounded-2xl glass-card text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">7</button>
+                    <button onclick="appendPin('8')" class="pin-btn h-14 md:h-16 rounded-2xl glass-card text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">8</button>
+                    <button onclick="appendPin('9')" class="pin-btn h-14 md:h-16 rounded-2xl glass-card text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">9</button>
+                    <button onclick="triggerBiometrics()" class="pin-btn h-14 md:h-16 rounded-2xl glass-card text-blue-400 flex items-center justify-center transition" title="Biometria">
+                        <i data-lucide="fingerprint" class="w-6 h-6 md:w-7 md:h-7"></i>
                     </button>
-                    <button onclick="appendPin('0')" class="pin-btn h-16 rounded-2xl glass-card text-2xl font-semibold text-white flex items-center justify-center transition">0</button>
-                    <button onclick="clearPin()" class="pin-btn h-16 rounded-2xl glass-card text-slate-400 flex items-center justify-center transition">
-                        <i data-lucide="delete" class="w-6 h-6"></i>
+                    <button onclick="appendPin('0')" class="pin-btn h-14 md:h-16 rounded-2xl glass-card text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">0</button>
+                    <button onclick="clearPin()" class="pin-btn h-14 md:h-16 rounded-2xl glass-card text-slate-400 flex items-center justify-center transition">
+                        <i data-lucide="delete" class="w-5 h-5 md:w-6 md:h-6"></i>
                     </button>
                 </div>
                 <div class="text-center">
-                    <button onclick="showRecoveryModal()" class="text-xs text-slate-400 hover:text-blue-400 transition">Esqueceu seu PIN?</button>
+                    <button onclick="showRecoveryModal()" class="text-xs text-slate-400 hover:text-blue-400 transition py-1">Esqueceu seu PIN?</button>
                 </div>
             </div>
         </section>
@@ -169,7 +177,7 @@
         <!-- ================================================== -->
         <!-- 3. INTERFACE PRINCIPAL / DASHBOARD                -->
         <!-- ================================================== -->
-        <main id="main-vault" class="hidden flex-1 flex flex-col pb-20 overflow-y-auto no-scrollbar">
+        <main id="main-vault" class="hidden flex-1 flex flex-col pb-24 overflow-y-auto no-scrollbar relative">
             <!-- Header Fixo -->
             <header class="sticky top-0 z-30 glass px-5 py-4 flex items-center justify-between border-b border-slate-800">
                 <div class="flex items-center gap-3">
@@ -191,7 +199,7 @@
             </header>
 
             <!-- Conteúdo Principal -->
-            <div class="p-5 space-y-6">
+            <div class="p-4 md:p-6 space-y-6">
 
                 <!-- Barra de Pesquisa Global -->
                 <div class="relative">
@@ -218,29 +226,29 @@
                     </div>
                 </div>
 
-                <!-- Categorias Principais (Grid) -->
+                <!-- Categorias Principais (Grid Adaptável) -->
                 <div>
                     <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Categorias</h3>
                     <div class="grid grid-cols-3 gap-3">
-                        <div onclick="openCategory('photos')" class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-blue-500/50 transition group">
-                            <div class="p-3 bg-blue-500/10 text-blue-400 rounded-xl mb-2 group-hover:scale-110 transition">
-                                <i data-lucide="image" class="w-6 h-6"></i>
+                        <div onclick="openCategory('photos')" class="glass-card p-3 md:p-4 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-blue-500/50 transition group">
+                            <div class="p-2.5 md:p-3 bg-blue-500/10 text-blue-400 rounded-xl mb-2 group-hover:scale-110 transition">
+                                <i data-lucide="image" class="w-5 h-5 md:w-6 md:h-6"></i>
                             </div>
                             <span class="text-xs font-medium text-slate-200">Fotos</span>
                             <span id="count-photos" class="text-[10px] text-slate-500 mt-0.5">0 itens</span>
                         </div>
-                        <div onclick="openCategory('videos')" class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-purple-500/50 transition group">
-                            <div class="p-3 bg-purple-500/10 text-purple-400 rounded-xl mb-2 group-hover:scale-110 transition">
-                                <i data-lucide="video" class="w-6 h-6"></i>
+                        <div onclick="openCategory('videos')" class="glass-card p-3 md:p-4 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-purple-500/50 transition group">
+                            <div class="p-2.5 md:p-3 bg-purple-500/10 text-purple-400 rounded-xl mb-2 group-hover:scale-110 transition">
+                                <i data-lucide="video" class="w-5 h-5 md:w-6 md:h-6"></i>
                             </div>
                             <span class="text-xs font-medium text-slate-200">Vídeos</span>
                             <span id="count-videos" class="text-[10px] text-slate-500 mt-0.5">0 itens</span>
                         </div>
-                        <div onclick="openCategory('documents')" class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-emerald-500/50 transition group">
-                            <div class="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl mb-2 group-hover:scale-110 transition">
-                                <i data-lucide="file-text" class="w-6 h-6"></i>
+                        <div onclick="openCategory('documents')" class="glass-card p-3 md:p-4 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-emerald-500/50 transition group">
+                            <div class="p-2.5 md:p-3 bg-emerald-500/10 text-emerald-400 rounded-xl mb-2 group-hover:scale-110 transition">
+                                <i data-lucide="file-text" class="w-5 h-5 md:w-6 md:h-6"></i>
                             </div>
-                            <span class="text-xs font-medium text-slate-200">Documentos</span>
+                            <span class="text-xs font-medium text-slate-200 truncate max-w-full">Docs</span>
                             <span id="count-documents" class="text-[10px] text-slate-500 mt-0.5">0 itens</span>
                         </div>
                     </div>
@@ -251,10 +259,10 @@
                     <div class="flex justify-between items-center mb-3">
                         <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Minhas Pastas</h3>
                         <button onclick="promptCreateFolder()" class="text-xs text-blue-400 font-medium flex items-center gap-1 hover:underline">
-                            <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i> Nova Pasta
+                            <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i> Nova
                         </button>
                     </div>
-                    <div id="folders-container" class="grid grid-cols-2 gap-3">
+                    <div id="folders-container" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         <!-- Pastas renderizadas via JS -->
                     </div>
                 </div>
@@ -273,10 +281,10 @@
         <!-- ================================================== -->
         <!-- 4. VISUALIZADOR DE CATEGORIA                       -->
         <!-- ================================================== -->
-        <section id="category-view" class="hidden fixed inset-0 z-30 bg-[#0B0F17] flex flex-col max-w-md mx-auto">
+        <section id="category-view" class="hidden absolute inset-0 z-30 bg-[#0B0F17] flex flex-col w-full h-full">
             <header class="glass px-4 py-3 flex items-center justify-between border-b border-slate-800">
                 <div class="flex items-center gap-3">
-                    <button onclick="closeCategoryView()" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800">
+                    <button onclick="closeCategoryView()" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition">
                         <i data-lucide="arrow-left" class="w-5 h-5"></i>
                     </button>
                     <h3 id="category-title" class="text-base font-bold text-slate-100">Galeria</h3>
@@ -288,7 +296,7 @@
                 </div>
             </header>
 
-            <div id="category-content" class="flex-1 overflow-y-auto p-4 no-scrollbar">
+            <div id="category-content" class="flex-1 overflow-y-auto p-4 pb-24 no-scrollbar">
                 <!-- Conteúdo dinâmico -->
             </div>
         </section>
@@ -296,12 +304,12 @@
         <!-- ================================================== -->
         <!-- 5. TELA DE CONFIGURAÇÕES                           -->
         <!-- ================================================== -->
-        <section id="settings-view" class="hidden flex-1 flex flex-col pb-20 overflow-y-auto no-scrollbar">
+        <section id="settings-view" class="hidden flex-1 flex flex-col pb-24 overflow-y-auto no-scrollbar">
             <header class="sticky top-0 z-30 glass px-5 py-4 border-b border-slate-800">
                 <h2 class="text-lg font-bold">Configurações & Segurança</h2>
             </header>
             
-            <div class="p-5 space-y-6">
+            <div class="p-4 md:p-6 space-y-6">
                 <!-- Segurança -->
                 <div class="space-y-3">
                     <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Segurança</h3>
@@ -314,7 +322,7 @@
                                     <p class="text-[10px] text-slate-400">Atualize seu PIN padrão (1234)</p>
                                 </div>
                             </div>
-                            <button onclick="promptChangePin()" class="text-xs text-blue-400 font-semibold">Alterar</button>
+                            <button onclick="promptChangePin()" class="text-xs text-blue-400 font-semibold hover:underline">Alterar</button>
                         </div>
                         <div class="p-4 flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -324,7 +332,7 @@
                                     <p class="text-[10px] text-slate-400">Digital / Reconhecimento Facial</p>
                                 </div>
                             </div>
-                            <input type="checkbox" id="biometric-toggle" checked class="accent-blue-600 w-4 h-4">
+                            <input type="checkbox" id="biometric-toggle" checked class="accent-blue-600 w-4 h-4 cursor-pointer">
                         </div>
                         <div class="p-4 flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -343,7 +351,7 @@
                     </div>
                 </div>
 
-                <!-- Lixeira -->
+                <!-- Gerenciamento -->
                 <div class="space-y-3">
                     <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Gerenciamento</h3>
                     <div class="glass-card rounded-2xl divide-y divide-slate-800/60 overflow-hidden">
@@ -375,7 +383,7 @@
                     <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Privacidade</h3>
                     <div class="glass-card rounded-2xl p-4 space-y-3">
                         <div class="flex items-start gap-3">
-                            <i data-lucide="shield-check" class="w-5 h-5 text-blue-400 mt-0.5"></i>
+                            <i data-lucide="shield-check" class="w-5 h-5 text-blue-400 mt-0.5 shrink-0"></i>
                             <div class="text-xs text-slate-300 leading-relaxed">
                                 <p class="font-semibold text-white">Arquitetura Zero-Knowledge</p>
                                 <p class="text-slate-400 text-[11px] mt-1">Seus arquivos e dados são mantidos exclusivamente armazenados na memória local criptografada do seu dispositivo. Nenhum dado é enviado para servidores externos.</p>
@@ -384,8 +392,8 @@
                     </div>
                 </div>
 
-                <div class="text-center pt-4">
-                    <p class="text-[10px] text-slate-500">Cofre Seguro v2.4.0 • Build Protegido Android</p>
+                <div class="text-center pt-2">
+                    <p class="text-[10px] text-slate-500">Cofre Seguro v2.4.0 • Build Protegido Android/iOS</p>
                 </div>
 
             </div>
@@ -394,9 +402,9 @@
         <!-- ================================================== -->
         <!-- BOTÃO FLUTUANTE (FAB) PARA ADICIONAR RÁPIDO        -->
         <!-- ================================================== -->
-        <div id="fab-container" class="hidden fixed bottom-20 right-6 z-30">
-            <button onclick="triggerImport()" class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition border border-blue-400/30">
-                <i data-lucide="plus" class="w-7 h-7"></i>
+        <div id="fab-container" class="hidden absolute bottom-20 right-5 z-30">
+            <button onclick="triggerImport()" class="w-13 h-13 md:w-14 md:h-14 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl flex items-center justify-center hover:scale-105 active:scale-95 transition border border-blue-400/30">
+                <i data-lucide="plus" class="w-6 h-6 md:w-7 md:h-7"></i>
             </button>
         </div>
 
@@ -406,7 +414,7 @@
         <!-- ================================================== -->
         <!-- NAVEGAÇÃO INFERIOR (BOTTOM TAB BAR)               -->
         <!-- ================================================== -->
-        <nav id="bottom-nav" class="hidden fixed bottom-0 max-w-md w-full glass border-t border-slate-800/80 px-6 py-2 flex justify-around items-center z-30">
+        <nav id="bottom-nav" class="hidden absolute bottom-0 inset-x-0 w-full glass border-t border-slate-800/80 px-6 py-2.5 flex justify-around items-center z-30">
             <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center gap-1 text-blue-500 transition">
                 <i data-lucide="layout-grid" class="w-5 h-5"></i>
                 <span class="text-[10px] font-medium">Cofre</span>
@@ -426,25 +434,25 @@
         <!-- ================================================== -->
 
         <!-- Modal de Preview de Mídia -->
-        <div id="preview-modal" class="hidden fixed inset-0 z-50 bg-black/95 flex flex-col justify-between p-4 max-w-md mx-auto">
+        <div id="preview-modal" class="hidden absolute inset-0 z-50 bg-black/95 flex flex-col justify-between p-4 w-full h-full">
             <div class="flex justify-between items-center z-10">
-                <button onclick="closePreview()" class="p-2 text-white bg-slate-800/80 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
-                <span id="preview-title" class="text-xs font-semibold text-slate-300 truncate max-w-[200px]"></span>
-                <button onclick="deleteCurrentPreview()" class="p-2 text-red-400 bg-slate-800/80 rounded-full"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+                <button onclick="closePreview()" class="p-2 text-white bg-slate-800/80 hover:bg-slate-700 rounded-full transition"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <span id="preview-title" class="text-xs font-semibold text-slate-300 truncate max-w-[180px] sm:max-w-[280px]"></span>
+                <button onclick="deleteCurrentPreview()" class="p-2 text-red-400 bg-slate-800/80 hover:bg-slate-700 rounded-full transition"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
             </div>
             <div id="preview-content" class="flex-1 flex items-center justify-center my-4 overflow-hidden">
                 <!-- Conteúdo -->
             </div>
-            <div class="text-center text-xs text-slate-500" id="preview-info"></div>
+            <div class="text-center text-xs text-slate-500 pb-2" id="preview-info"></div>
         </div>
 
         <!-- Modal Lixeira -->
-        <div id="trash-modal" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md p-6 max-w-md mx-auto flex flex-col">
-            <div class="flex justify-between items-center mb-4">
+        <div id="trash-modal" class="hidden absolute inset-0 z-50 bg-slate-950/95 backdrop-blur-md p-5 w-full h-full flex flex-col">
+            <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-800">
                 <h3 class="text-base font-bold text-white flex items-center gap-2">
                     <i data-lucide="trash-2" class="w-5 h-5 text-red-400"></i> Lixeira Protegida
                 </h3>
-                <button onclick="closeTrashModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="closeTrashModal()" class="p-1 text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div id="trash-list" class="flex-1 overflow-y-auto space-y-2 no-scrollbar">
                 <!-- Lixeira -->
@@ -452,10 +460,10 @@
         </div>
 
         <!-- Modal de Progresso de Importação -->
-        <div id="progress-modal" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-6">
+        <div id="progress-modal" class="hidden absolute inset-0 z-50 bg-black/80 flex items-center justify-center p-6">
             <div class="glass-card p-6 rounded-2xl w-full max-w-xs text-center border border-slate-700">
-                <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                <h4 class="text-sm font-bold text-white mb-1">Criptografando & Protegendo...</h4>
+                <div class="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                <h4 class="text-sm font-bold text-white mb-1">Criptografando...</h4>
                 <p class="text-xs text-slate-400 mb-3">Armazenando em ambiente seguro</p>
                 <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
                     <div id="import-progress-bar" class="bg-blue-500 h-full w-0 transition-all duration-200"></div>
@@ -469,7 +477,7 @@
     <script>
         // ESTADO GLOBAL DO APLICATIVO
         const STATE = {
-            pin: "1234", // SENHA PROVISÓRIA PADRÃO
+            pin: "1234",
             enteredPin: "",
             isUnlocked: false,
             activeTab: 'dashboard',
@@ -500,10 +508,14 @@
 
         // PERSISTÊNCIA NO LOCALSTORAGE
         function saveStateToStorage() {
-            localStorage.setItem('cofre_files', JSON.stringify(STATE.files));
-            localStorage.setItem('cofre_trash', JSON.stringify(STATE.trash));
-            localStorage.setItem('cofre_folders', JSON.stringify(STATE.folders));
-            localStorage.setItem('cofre_pin', STATE.pin);
+            try {
+                localStorage.setItem('cofre_files', JSON.stringify(STATE.files));
+                localStorage.setItem('cofre_trash', JSON.stringify(STATE.trash));
+                localStorage.setItem('cofre_folders', JSON.stringify(STATE.folders));
+                localStorage.setItem('cofre_pin', STATE.pin);
+            } catch (e) {
+                alert("Limite de armazenamento do navegador atingido.");
+            }
         }
 
         function loadStateFromStorage() {
@@ -599,10 +611,10 @@
             foldersContainer.innerHTML = STATE.folders.map(folder => `
                 <div class="glass-card p-3 rounded-xl flex items-center justify-between border border-slate-800">
                     <div class="flex items-center gap-2.5 overflow-hidden">
-                        <i data-lucide="folder" class="w-5 h-5 text-amber-400 shrink-0"></i>
+                        <i data-lucide="folder" class="w-4 h-4 md:w-5 md:h-5 text-amber-400 shrink-0"></i>
                         <span class="text-xs font-medium truncate text-slate-200">${folder}</span>
                     </div>
-                    <i data-lucide="more-vertical" class="w-4 h-4 text-slate-500"></i>
+                    <i data-lucide="more-vertical" class="w-4 h-4 text-slate-500 shrink-0"></i>
                 </div>
             `).join('');
 
@@ -614,7 +626,7 @@
                 recentContainer.innerHTML = STATE.files.slice(-4).reverse().map((file) => `
                     <div onclick="openPreview(${STATE.files.indexOf(file)})" class="glass-card p-3 rounded-xl flex items-center justify-between cursor-pointer hover:bg-slate-800/50 transition">
                         <div class="flex items-center gap-3 overflow-hidden">
-                            <div class="p-2 rounded-lg bg-slate-800 text-blue-400">
+                            <div class="p-2 rounded-lg bg-slate-800 text-blue-400 shrink-0">
                                 <i data-lucide="${getFileIcon(file.type)}" class="w-4 h-4"></i>
                             </div>
                             <div class="truncate">
@@ -622,7 +634,7 @@
                                 <p class="text-[10px] text-slate-500">${formatSize(file.size)}</p>
                             </div>
                         </div>
-                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-600"></i>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-600 shrink-0"></i>
                     </div>
                 `).join('');
             }
@@ -670,7 +682,10 @@
 
         // IMPORTAÇÃO
         function triggerImport() {
-            document.getElementById('file-input').click();
+            const input = document.getElementById('file-input');
+            input.removeAttribute('capture');
+            input.removeAttribute('accept');
+            input.click();
         }
 
         function triggerCamera() {
@@ -754,7 +769,7 @@
             } else {
                 if (cat === 'photos') {
                     content.innerHTML = `
-                        <div class="grid grid-cols-3 gap-2">
+                        <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
                             ${filteredFiles.map((file) => `
                                 <div onclick="openPreviewById('${file.id}')" class="aspect-square bg-slate-800 rounded-xl overflow-hidden border border-slate-800 cursor-pointer hover:opacity-80 transition">
                                     <img src="${file.data}" class="w-full h-full object-cover">
@@ -768,7 +783,7 @@
                             ${filteredFiles.map((file) => `
                                 <div onclick="openPreviewById('${file.id}')" class="glass-card p-3 rounded-xl flex items-center justify-between cursor-pointer hover:bg-slate-800/60 transition">
                                     <div class="flex items-center gap-3 overflow-hidden">
-                                        <div class="p-2.5 rounded-lg bg-slate-800 text-blue-400">
+                                        <div class="p-2.5 rounded-lg bg-slate-800 text-blue-400 shrink-0">
                                             <i data-lucide="${getFileIcon(file.type)}" class="w-5 h-5"></i>
                                         </div>
                                         <div class="truncate">
@@ -776,7 +791,7 @@
                                             <p class="text-[10px] text-slate-500">${formatSize(file.size)} •${file.date}</p>
                                         </div>
                                     </div>
-                                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-600"></i>
+                                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-600 shrink-0"></i>
                                 </div>
                             `).join('')}
                         </div>
@@ -816,11 +831,11 @@
                 content.innerHTML = `<video src="${file.data}" controls class="max-h-full max-w-full rounded-lg"></video>`;
             } else {
                 content.innerHTML = `
-                    <div class="text-center p-6 glass-card rounded-2xl">
+                    <div class="text-center p-6 glass-card rounded-2xl max-w-xs">
                         <i data-lucide="file-text" class="w-16 h-16 text-blue-400 mx-auto mb-3"></i>
-                        <p class="text-xs font-semibold text-white mb-1">${file.name}</p>
+                        <p class="text-xs font-semibold text-white mb-1 truncate">${file.name}</p>
                         <p class="text-[10px] text-slate-400 mb-4">Documento Protegido</p>
-                        <a href="${file.data}" download="${file.name}" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-medium inline-block">Exportar Arquivo</a>
+                        <a href="${file.data}" download="${file.name}" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-medium inline-block hover:bg-blue-500 transition">Exportar Arquivo</a>
                     </div>
                 `;
             }
@@ -863,8 +878,8 @@
                             <p class="text-[10px] text-slate-500">${formatSize(file.size)}</p>
                         </div>
                         <div class="flex gap-2">
-                            <button onclick="restoreFromTrash(${idx})" class="p-1.5 text-emerald-400 hover:bg-slate-800 rounded-lg" title="Restaurar"><i data-lucide="rotate-ccw" class="w-4 h-4"></i></button>
-                            <button onclick="deletePermanently(${idx})" class="p-1.5 text-red-400 hover:bg-slate-800 rounded-lg" title="Excluir"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                            <button onclick="restoreFromTrash(${idx})" class="p-1.5 text-emerald-400 hover:bg-slate-800 rounded-lg transition" title="Restaurar"><i data-lucide="rotate-ccw" class="w-4 h-4"></i></button>
+                            <button onclick="deletePermanently(${idx})" class="p-1.5 text-red-400 hover:bg-slate-800 rounded-lg transition" title="Excluir"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                         </div>
                     </div>
                 `).join('');
