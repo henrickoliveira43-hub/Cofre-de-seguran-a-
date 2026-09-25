@@ -435,6 +435,30 @@
         <!-- MODAIS E OVERLAYS                                 -->
         <!-- ================================================== -->
 
+        <!-- MODAL DE SOLICITAÇÃO DE PERMISSÃO DA CÂMERA -->
+        <div id="camera-permission-modal" class="hidden absolute inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 xs:p-6">
+            <div class="glass-card p-5 xs:p-6 rounded-3xl w-full max-w-xs text-center border border-slate-700/80 shadow-2xl flex flex-col items-center">
+                
+                <div class="w-14 h-14 bg-blue-600/10 border border-blue-500/20 rounded-2xl flex items-center justify-center mb-4 text-blue-400">
+                    <i data-lucide="camera" class="w-7 h-7"></i>
+                </div>
+
+                <h4 class="text-base font-bold text-white mb-1">Acesso à Câmera</h4>
+                <p class="text-xs text-slate-400 mb-5 leading-relaxed">
+                    O Cofre Seguro precisa da sua permissão para tirar fotos e salvá-las diretamente na sua galeria criptografada local.
+                </p>
+
+                <div class="w-full space-y-2">
+                    <button onclick="requestCameraAccess()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition border border-blue-400/30">
+                        Permitir Câmera
+                    </button>
+                    <button onclick="closeCameraPermissionModal()" class="w-full py-2.5 bg-slate-800/80 hover:bg-slate-700 text-slate-400 rounded-xl text-xs font-semibold transition">
+                        Agora Não
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- TELA / MODAL DA CÂMERA AO VIVO -->
         <div id="camera-modal" class="hidden absolute inset-0 z-50 bg-black flex flex-col justify-between p-4 w-full h-full">
             <div class="flex justify-between items-center z-10">
@@ -612,6 +636,7 @@
             STATE.enteredPin = "";
             clearPin();
             closeLiveCamera();
+            closeCameraPermissionModal();
             document.getElementById('main-vault').classList.add('hidden');
             document.getElementById('settings-view').classList.add('hidden');
             document.getElementById('category-view').classList.add('hidden');
@@ -704,8 +729,23 @@
             }
         }
 
-        // CÂMERA AO VIVO
-        async function openLiveCamera() {
+        // PERMISSÃO E CÂMERA AO VIVO
+        function openLiveCamera() {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                alert("O acesso à câmera requer conexão segura (HTTPS ou servidor local).");
+                return;
+            }
+            document.getElementById('camera-permission-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeCameraPermissionModal() {
+            document.getElementById('camera-permission-modal').classList.add('hidden');
+        }
+
+        async function requestCameraAccess() {
+            closeCameraPermissionModal();
+
             try {
                 const constraints = {
                     video: { facingMode: { ideal: "environment" } },
@@ -716,8 +756,16 @@
                 video.srcObject = cameraStream;
                 document.getElementById('camera-modal').classList.remove('hidden');
             } catch (err) {
-                alert("Não foi possível acessar a câmera ao vivo. Verifique as permissões do seu navegador.");
-                console.error(err);
+                console.error("Erro no acesso à câmera:", err);
+                if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+                    alert("Permissão negada.\n\nPara permitir o acesso, clique no ícone de configurações ou cadeado na barra do seu navegador e altere a opção da Câmera para 'Permitir'.");
+                } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+                    alert("Nenhuma câmera foi encontrada neste dispositivo.");
+                } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
+                    alert("A câmera já está sendo usada por outro aplicativo.");
+                } else {
+                    alert("Não foi possível acessar a câmera: " + err.message);
+                }
             }
         }
 
