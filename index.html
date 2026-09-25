@@ -68,23 +68,6 @@
             animation: pulseGlow 3s infinite ease-in-out;
         }
 
-        /* Animação do Scanner Biométrico */
-        @keyframes bioScan {
-            0% { top: 0%; opacity: 0.8; }
-            50% { top: 100%; opacity: 1; }
-            100% { top: 0%; opacity: 0.8; }
-        }
-
-        .bio-scan-line {
-            position: absolute;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #3B82F6, #60A5FA, #3B82F6, transparent);
-            box-shadow: 0 0 12px #3B82F6;
-            animation: bioScan 2s infinite ease-in-out;
-        }
-
         /* Ocultação de Scrollbars mantendo a rolagem ativa */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
@@ -149,7 +132,7 @@
         </section>
 
         <!-- ================================================== -->
-        <!-- 2. TELA DE AUTENTICAÇÃO (PIN & BIOMETRIA)          -->
+        <!-- 2. TELA DE AUTENTICAÇÃO (SOMENTE PIN)             -->
         <!-- ================================================== -->
         <section id="auth-screen" class="hidden flex-1 flex flex-col justify-between p-4 xs:p-6 z-40 bg-gradient-to-b from-[#0B0F17] to-slate-950 overflow-y-auto no-scrollbar">
             <!-- Cabeçalho Auth -->
@@ -158,7 +141,7 @@
                     <i data-lucide="lock" class="w-6 h-6 xs:w-7 xs:h-7 md:w-8 md:h-8"></i>
                 </div>
                 <h2 class="text-lg xs:text-xl md:text-2xl font-bold text-white mb-0.5">Acessar Cofre</h2>
-                <p class="text-[11px] xs:text-xs text-slate-400">Digite seu PIN ou use a Biometria</p>
+                <p class="text-[11px] xs:text-xs text-slate-400">Digite seu PIN de 4 dígitos</p>
 
                 <!-- Dica da Senha Provisória -->
                 <div class="mt-2 xs:mt-3 inline-flex items-center gap-1.5 px-3 py-1 bg-amber-500/10 border border-amber-500/30 rounded-full text-amber-400 text-[11px] xs:text-xs font-medium">
@@ -188,10 +171,7 @@
                     <button onclick="appendPin('7')" class="pin-btn h-12 xs:h-14 md:h-16 rounded-2xl glass-card text-lg xs:text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">7</button>
                     <button onclick="appendPin('8')" class="pin-btn h-12 xs:h-14 md:h-16 rounded-2xl glass-card text-lg xs:text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">8</button>
                     <button onclick="appendPin('9')" class="pin-btn h-12 xs:h-14 md:h-16 rounded-2xl glass-card text-lg xs:text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">9</button>
-                    <button onclick="triggerBiometrics()" class="pin-btn h-12 xs:h-14 md:h-16 rounded-2xl glass-card border-blue-500/40 text-blue-400 flex items-center justify-center transition relative overflow-hidden group" title="Biometria">
-                        <div class="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition"></div>
-                        <i data-lucide="fingerprint" class="w-5 h-5 xs:w-6 xs:h-6 md:w-7 md:h-7 text-blue-400"></i>
-                    </button>
+                    <div class="h-12 xs:h-14 md:h-16"></div> <!-- Espaço Vazio alinhado -->
                     <button onclick="appendPin('0')" class="pin-btn h-12 xs:h-14 md:h-16 rounded-2xl glass-card text-lg xs:text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">0</button>
                     <button onclick="clearPin()" class="pin-btn h-12 xs:h-14 md:h-16 rounded-2xl glass-card text-slate-400 flex items-center justify-center transition">
                         <i data-lucide="delete" class="w-5 h-5 md:w-6 md:h-6"></i>
@@ -227,7 +207,7 @@
                 </div>
             </header>
 
-            <!-- Conteúdo Principal com Espaçamento Responsivo -->
+            <!-- Conteúdo Principal -->
             <div class="p-3.5 xs:p-4 md:p-6 space-y-4 xs:space-y-6">
 
                 <!-- Barra de Pesquisa Global -->
@@ -255,7 +235,7 @@
                     </div>
                 </div>
 
-                <!-- Categorias Principais (Grid Adaptável) -->
+                <!-- Categorias Principais -->
                 <div>
                     <h3 class="text-[11px] xs:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2.5 xs:mb-3">Categorias</h3>
                     <div class="grid grid-cols-3 gap-2.5 xs:gap-3">
@@ -348,20 +328,10 @@
                                 <i data-lucide="key-round" class="w-5 h-5 text-blue-400 shrink-0"></i>
                                 <div>
                                     <p class="text-xs font-medium">Alterar PIN</p>
-                                    <p class="text-[10px] text-slate-400">Atualize seu PIN padrão (1234)</p>
+                                    <p class="text-[10px] text-slate-400">Atualize sua senha numérica de acesso</p>
                                 </div>
                             </div>
                             <button onclick="promptChangePin()" class="text-xs text-blue-400 font-semibold hover:underline">Alterar</button>
-                        </div>
-                        <div class="p-3.5 xs:p-4 flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <i data-lucide="fingerprint" class="w-5 h-5 text-emerald-400 shrink-0"></i>
-                                <div>
-                                    <p class="text-xs font-medium">Autenticação Biométrica</p>
-                                    <p class="text-[10px] text-slate-400">Touch ID / Face ID / Digital</p>
-                                </div>
-                            </div>
-                            <input type="checkbox" id="biometric-toggle" checked onchange="toggleBiometrics(this.checked)" class="accent-blue-600 w-4 h-4 cursor-pointer">
                         </div>
                         <div class="p-3.5 xs:p-4 flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -462,27 +432,6 @@
         <!-- MODAIS E OVERLAYS                                 -->
         <!-- ================================================== -->
 
-        <!-- MODAL BIOMÉTRICO PROFISSIONAL -->
-        <div id="biometric-modal" class="hidden absolute inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 xs:p-6 transition-all duration-300">
-            <div class="glass-card p-5 xs:p-6 rounded-3xl w-full max-w-xs text-center border border-slate-700/80 shadow-2xl relative overflow-hidden flex flex-col items-center">
-                
-                <h4 id="bio-modal-title" class="text-sm xs:text-base font-bold text-white mb-1">Verificação Biométrica</h4>
-                <p id="bio-modal-subtitle" class="text-[11px] xs:text-xs text-slate-400 mb-5 xs:mb-6">Aproxime o dedo do leitor ou olhe para a câmera</p>
-
-                <!-- Ícone Biométrico com Efeito de Leitura -->
-                <div class="relative w-20 h-20 xs:w-24 xs:h-24 mb-5 xs:mb-6 flex items-center justify-center rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-inner">
-                    <div id="bio-scan-line" class="bio-scan-line"></div>
-                    <i id="bio-modal-icon" data-lucide="fingerprint" class="w-12 h-12 xs:w-14 xs:h-14 text-blue-500 transition-all duration-300"></i>
-                </div>
-
-                <p id="bio-modal-status" class="text-xs text-blue-400 font-medium mb-4 xs:mb-5 h-4">Escaneando biometria...</p>
-
-                <button onclick="cancelBiometrics()" class="w-full py-2.5 bg-slate-800/80 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-semibold transition border border-slate-700/50">
-                    Cancelar e Usar PIN
-                </button>
-            </div>
-        </div>
-
         <!-- Modal de Preview de Mídia -->
         <div id="preview-modal" class="hidden absolute inset-0 z-50 bg-black/95 flex flex-col justify-between p-3 xs:p-4 w-full h-full">
             <div class="flex justify-between items-center z-10">
@@ -534,11 +483,8 @@
             files: [],
             folders: ['Documentos Pessoais', 'Fotos Privadas', 'Viagens'],
             trash: [],
-            currentPreviewIndex: null,
-            biometricsEnabled: true
+            currentPreviewIndex: null
         };
-
-        let bioTimeout = null;
 
         // INICIALIZAÇÃO
         document.addEventListener("DOMContentLoaded", () => {
@@ -549,11 +495,6 @@
             setTimeout(() => {
                 document.getElementById('splash-screen').classList.add('hidden');
                 document.getElementById('auth-screen').classList.remove('hidden');
-
-                // Tenta acionar a biometria automaticamente no início, caso habilitada
-                if (STATE.biometricsEnabled) {
-                    setTimeout(() => triggerBiometrics(true), 300);
-                }
             }, 1800);
 
             // Bloqueio Automático ao minimizar ou trocar de aba
@@ -571,7 +512,6 @@
                 localStorage.setItem('cofre_trash', JSON.stringify(STATE.trash));
                 localStorage.setItem('cofre_folders', JSON.stringify(STATE.folders));
                 localStorage.setItem('cofre_pin', STATE.pin);
-                localStorage.setItem('cofre_bio', JSON.stringify(STATE.biometricsEnabled));
             } catch (e) {
                 alert("Limite de armazenamento do navegador atingido.");
             }
@@ -582,15 +522,11 @@
             const storedTrash = localStorage.getItem('cofre_trash');
             const storedFolders = localStorage.getItem('cofre_folders');
             const storedPin = localStorage.getItem('cofre_pin');
-            const storedBio = localStorage.getItem('cofre_bio');
 
             if (storedFiles) STATE.files = JSON.parse(storedFiles);
             if (storedTrash) STATE.trash = JSON.parse(storedTrash);
             if (storedFolders) STATE.folders = JSON.parse(storedFolders);
             if (storedPin) STATE.pin = storedPin;
-            if (storedBio !== null) STATE.biometricsEnabled = JSON.parse(storedBio);
-
-            document.getElementById('biometric-toggle').checked = STATE.biometricsEnabled;
         }
 
         // AUTENTICAÇÃO E PIN
@@ -631,68 +567,6 @@
                 clearPin();
                 setTimeout(() => err.classList.add('opacity-0'), 2000);
             }
-        }
-
-        // AUTENTICAÇÃO BIOMÉTRICA PROFISSIONAL
-        async function triggerBiometrics(isAuto = false) {
-            if (!STATE.biometricsEnabled && isAuto) return;
-
-            const modal = document.getElementById('biometric-modal');
-            const statusText = document.getElementById('bio-modal-status');
-            const icon = document.getElementById('bio-modal-icon');
-            const scanLine = document.getElementById('bio-scan-line');
-
-            modal.classList.remove('hidden');
-            scanLine.classList.remove('hidden');
-            statusText.innerText = "Escaneando biometria...";
-            statusText.className = "text-xs text-blue-400 font-medium mb-4 xs:mb-5 h-4";
-            icon.className = "w-12 h-12 xs:w-14 xs:h-14 text-blue-500 transition-all duration-300";
-
-            if (window.PublicKeyCredential && window.isSecureContext) {
-                try {
-                    await executeNativeBiometricOrSimulation(statusText, icon, scanLine);
-                    return;
-                } catch (err) {}
-            }
-
-            bioTimeout = setTimeout(() => {
-                scanLine.classList.add('hidden');
-                statusText.innerText = "Digital Reconhecida!";
-                statusText.className = "text-xs text-emerald-400 font-semibold mb-4 xs:mb-5 h-4";
-                icon.className = "w-12 h-12 xs:w-14 xs:h-14 text-emerald-400 scale-110 transition-all duration-300";
-
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    unlockVault();
-                }, 700);
-            }, 1400);
-        }
-
-        function executeNativeBiometricOrSimulation(statusText, icon, scanLine) {
-            return new Promise((resolve) => {
-                bioTimeout = setTimeout(() => {
-                    scanLine.classList.add('hidden');
-                    statusText.innerText = "Identidade Confirmada!";
-                    statusText.className = "text-xs text-emerald-400 font-semibold mb-4 xs:mb-5 h-4";
-                    icon.className = "w-12 h-12 xs:w-14 xs:h-14 text-emerald-400 scale-110 transition-all duration-300";
-
-                    setTimeout(() => {
-                        document.getElementById('biometric-modal').classList.add('hidden');
-                        unlockVault();
-                        resolve();
-                    }, 600);
-                }, 1200);
-            });
-        }
-
-        function cancelBiometrics() {
-            if (bioTimeout) clearTimeout(bioTimeout);
-            document.getElementById('biometric-modal').classList.add('hidden');
-        }
-
-        function toggleBiometrics(enabled) {
-            STATE.biometricsEnabled = enabled;
-            saveStateToStorage();
         }
 
         function unlockVault() {
@@ -1060,7 +934,7 @@
         }
 
         function showRecoveryModal() {
-            alert("A senha provisória inicial do sistema é 1234. Caso tenha alterado, utilize a biometria.");
+            alert("A senha provisória inicial do sistema é 1234. Caso tenha alterado e esquecido, limpe os dados do navegador para redefinir.");
         }
 
         function getFileIcon(type) {
