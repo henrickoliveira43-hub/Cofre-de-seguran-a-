@@ -26,14 +26,12 @@
         }
 
         body {
-            /* Suporte para notch de smartphones modernos (iOS / Android) */
             padding-top: env(safe-area-inset-top);
             padding-bottom: env(safe-area-inset-bottom);
             padding-left: env(safe-area-inset-left);
             padding-right: env(safe-area-inset-right);
         }
 
-        /* Efeito de Vidro Fosco (Glassmorphism) */
         .glass {
             background: rgba(18, 24, 38, 0.85);
             backdrop-filter: blur(16px);
@@ -48,7 +46,6 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Animações Personalizadas */
         @keyframes vaultOpen {
             0% { transform: scale(1) rotate(0deg); }
             50% { transform: scale(1.15) rotate(180deg); }
@@ -68,7 +65,6 @@
             animation: pulseGlow 3s infinite ease-in-out;
         }
 
-        /* Ocultação de Scrollbars mantendo a rolagem ativa */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -77,7 +73,6 @@
             scrollbar-width: none;
         }
 
-        /* Feedback tátil para botões */
         .pin-btn:active, .btn-touch:active {
             transform: scale(0.94);
             background-color: rgba(59, 130, 246, 0.25);
@@ -89,9 +84,7 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    screens: {
-                        'xs': '380px'
-                    },
+                    screens: { 'xs': '380px' },
                     colors: {
                         vault: {
                             dark: '#0B0F17',
@@ -112,9 +105,7 @@
     <!-- APP CONTAINER -->
     <div id="app" class="relative w-full h-full max-w-md md:max-w-xl lg:max-w-2xl md:h-[90vh] md:max-h-[850px] md:rounded-3xl flex flex-col justify-between shadow-2xl bg-[#0B0F17] overflow-hidden border-0 md:border md:border-slate-800/80">
 
-        <!-- ================================================== -->
-        <!-- 1. TELA DE ABERTURA / SPLASH SCREEN                -->
-        <!-- ================================================== -->
+        <!-- 1. SPLASH SCREEN -->
         <section id="splash-screen" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-b from-slate-950 via-[#0B0F17] to-slate-900 p-6 text-center">
             <div class="relative flex items-center justify-center mb-6">
                 <div class="absolute w-32 h-32 xs:w-36 xs:h-36 md:w-48 md:h-48 bg-blue-600/20 rounded-full blur-2xl glow-effect"></div>
@@ -131,11 +122,8 @@
             </div>
         </section>
 
-        <!-- ================================================== -->
-        <!-- 2. TELA DE AUTENTICAÇÃO (SOMENTE PIN)             -->
-        <!-- ================================================== -->
+        <!-- 2. AUTENTICAÇÃO PIN -->
         <section id="auth-screen" class="hidden flex-1 flex flex-col justify-between p-4 xs:p-6 z-40 bg-gradient-to-b from-[#0B0F17] to-slate-950 overflow-y-auto no-scrollbar">
-            <!-- Cabeçalho Auth -->
             <div class="text-center pt-2 xs:pt-4 md:pt-6">
                 <div class="w-12 h-12 xs:w-14 xs:h-14 md:w-16 md:h-16 bg-blue-600/10 rounded-2xl border border-blue-500/20 flex items-center justify-center mx-auto mb-2 xs:mb-3 text-blue-400">
                     <i data-lucide="lock" class="w-6 h-6 xs:w-7 xs:h-7 md:w-8 md:h-8"></i>
@@ -143,13 +131,11 @@
                 <h2 class="text-lg xs:text-xl md:text-2xl font-bold text-white mb-0.5">Acessar Cofre</h2>
                 <p class="text-[11px] xs:text-xs text-slate-400">Digite seu PIN de 4 dígitos</p>
 
-                <!-- Dica da Senha Provisória -->
                 <div class="mt-2 xs:mt-3 inline-flex items-center gap-1.5 px-3 py-1 bg-amber-500/10 border border-amber-500/30 rounded-full text-amber-400 text-[11px] xs:text-xs font-medium">
                     <i data-lucide="key" class="w-3 h-3 xs:w-3.5 xs:h-3.5"></i>
                     <span>Senha provisória: <strong class="underline tracking-wider">1234</strong></span>
                 </div>
 
-                <!-- Indicadores do PIN (4 Dígitos) -->
                 <div class="flex justify-center items-center gap-3 xs:gap-4 mt-4 xs:mt-6" id="pin-dots">
                     <div class="w-3 h-3 xs:w-3.5 xs:h-3.5 md:w-4 md:h-4 rounded-full border-2 border-slate-600 transition-all duration-200"></div>
                     <div class="w-3 h-3 xs:w-3.5 xs:h-3.5 md:w-4 md:h-4 rounded-full border-2 border-slate-600 transition-all duration-200"></div>
@@ -159,7 +145,6 @@
                 <p id="auth-error" class="text-[11px] xs:text-xs text-red-400 mt-1 xs:mt-2 h-4 opacity-0 transition-opacity font-medium">PIN Incorreto!</p>
             </div>
 
-            <!-- Teclado Numérico Adaptável -->
             <div class="my-auto py-2 xs:py-4">
                 <div class="grid grid-cols-3 gap-2.5 xs:gap-3 md:gap-4 max-w-[280px] xs:max-w-xs mx-auto mb-3 xs:mb-4">
                     <button onclick="appendPin('1')" class="pin-btn h-12 xs:h-14 md:h-16 rounded-2xl glass-card text-lg xs:text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">1</button>
@@ -171,7 +156,7 @@
                     <button onclick="appendPin('7')" class="pin-btn h-12 xs:h-14 md:h-16 rounded-2xl glass-card text-lg xs:text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">7</button>
                     <button onclick="appendPin('8')" class="pin-btn h-12 xs:h-14 md:h-16 rounded-2xl glass-card text-lg xs:text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">8</button>
                     <button onclick="appendPin('9')" class="pin-btn h-12 xs:h-14 md:h-16 rounded-2xl glass-card text-lg xs:text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">9</button>
-                    <div class="h-12 xs:h-14 md:h-16"></div> <!-- Espaço Vazio alinhado -->
+                    <div class="h-12 xs:h-14 md:h-16"></div>
                     <button onclick="appendPin('0')" class="pin-btn h-12 xs:h-14 md:h-16 rounded-2xl glass-card text-lg xs:text-xl md:text-2xl font-semibold text-white flex items-center justify-center transition">0</button>
                     <button onclick="clearPin()" class="pin-btn h-12 xs:h-14 md:h-16 rounded-2xl glass-card text-slate-400 flex items-center justify-center transition">
                         <i data-lucide="delete" class="w-5 h-5 md:w-6 md:h-6"></i>
@@ -183,11 +168,8 @@
             </div>
         </section>
 
-        <!-- ================================================== -->
-        <!-- 3. INTERFACE PRINCIPAL / DASHBOARD                -->
-        <!-- ================================================== -->
+        <!-- 3. DASHBOARD -->
         <main id="main-vault" class="hidden flex-1 flex flex-col pb-20 md:pb-24 overflow-y-auto no-scrollbar relative">
-            <!-- Header Fixo -->
             <header class="sticky top-0 z-30 glass px-4 xs:px-5 py-3 xs:py-4 flex items-center justify-between border-b border-slate-800">
                 <div class="flex items-center gap-2.5 xs:gap-3">
                     <div class="p-1.5 xs:p-2 bg-blue-600/20 border border-blue-500/30 rounded-xl text-blue-400">
@@ -207,17 +189,13 @@
                 </div>
             </header>
 
-            <!-- Conteúdo Principal -->
             <div class="p-3.5 xs:p-4 md:p-6 space-y-4 xs:space-y-6">
-
-                <!-- Barra de Pesquisa Global -->
                 <div class="relative">
                     <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400"></i>
                     <input type="text" id="global-search" oninput="handleSearch(this.value)" placeholder="Pesquisar fotos, vídeos, arquivos..." 
                            class="w-full bg-slate-900/90 border border-slate-800 rounded-2xl pl-10 pr-4 py-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition">
                 </div>
 
-                <!-- Card de Armazenamento -->
                 <div class="glass-card p-3.5 xs:p-4 rounded-2xl border border-slate-800/80">
                     <div class="flex justify-between items-center mb-2">
                         <div class="flex items-center gap-2">
@@ -235,7 +213,6 @@
                     </div>
                 </div>
 
-                <!-- Categorias Principais -->
                 <div>
                     <h3 class="text-[11px] xs:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2.5 xs:mb-3">Categorias</h3>
                     <div class="grid grid-cols-3 gap-2.5 xs:gap-3">
@@ -263,7 +240,6 @@
                     </div>
                 </div>
 
-                <!-- Seção de Pastas -->
                 <div>
                     <div class="flex justify-between items-center mb-2.5 xs:mb-3">
                         <h3 class="text-[11px] xs:text-xs font-semibold text-slate-400 uppercase tracking-wider">Minhas Pastas</h3>
@@ -271,25 +247,17 @@
                             <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i> Nova
                         </button>
                     </div>
-                    <div id="folders-container" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 xs:gap-3">
-                        <!-- Pastas renderizadas via JS -->
-                    </div>
+                    <div id="folders-container" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 xs:gap-3"></div>
                 </div>
 
-                <!-- Arquivos Recentes -->
                 <div>
                     <h3 class="text-[11px] xs:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2.5 xs:mb-3">Arquivos Recentes</h3>
-                    <div id="recent-files" class="space-y-2">
-                        <!-- Lista de recentes via JS -->
-                    </div>
+                    <div id="recent-files" class="space-y-2"></div>
                 </div>
-
             </div>
         </main>
 
-        <!-- ================================================== -->
-        <!-- 4. VISUALIZADOR DE CATEGORIA                       -->
-        <!-- ================================================== -->
+        <!-- 4. VISUALIZADOR DE CATEGORIA -->
         <section id="category-view" class="hidden absolute inset-0 z-30 bg-[#0B0F17] flex flex-col w-full h-full">
             <header class="glass px-4 py-3 flex items-center justify-between border-b border-slate-800">
                 <div class="flex items-center gap-3">
@@ -304,22 +272,16 @@
                     </button>
                 </div>
             </header>
-
-            <div id="category-content" class="flex-1 overflow-y-auto p-3.5 xs:p-4 pb-20 md:pb-24 no-scrollbar">
-                <!-- Conteúdo dinâmico -->
-            </div>
+            <div id="category-content" class="flex-1 overflow-y-auto p-3.5 xs:p-4 pb-20 md:pb-24 no-scrollbar"></div>
         </section>
 
-        <!-- ================================================== -->
-        <!-- 5. TELA DE CONFIGURAÇÕES                           -->
-        <!-- ================================================== -->
+        <!-- 5. CONFIGURAÇÕES -->
         <section id="settings-view" class="hidden flex-1 flex flex-col pb-20 md:pb-24 overflow-y-auto no-scrollbar">
             <header class="sticky top-0 z-30 glass px-4 xs:px-5 py-3.5 xs:py-4 border-b border-slate-800">
                 <h2 class="text-base xs:text-lg font-bold">Configurações & Segurança</h2>
             </header>
             
             <div class="p-3.5 xs:p-4 md:p-6 space-y-5 xs:space-y-6">
-                <!-- Segurança -->
                 <div class="space-y-2.5 xs:space-y-3">
                     <h3 class="text-[11px] xs:text-xs font-semibold text-slate-400 uppercase tracking-wider">Segurança</h3>
                     <div class="glass-card rounded-2xl divide-y divide-slate-800/60 overflow-hidden">
@@ -338,19 +300,18 @@
                                 <i data-lucide="clock" class="w-5 h-5 text-amber-400 shrink-0"></i>
                                 <div>
                                     <p class="text-xs font-medium">Bloqueio Automático</p>
-                                    <p class="text-[10px] text-slate-400">Inatividade</p>
+                                    <p class="text-[10px] text-slate-400">Por inatividade no aplicativo</p>
                                 </div>
                             </div>
-                            <select class="bg-slate-900 border border-slate-700 text-xs text-slate-300 rounded-lg p-1.5 focus:outline-none">
-                                <option>Imediato</option>
-                                <option>1 Minuto</option>
-                                <option>5 Minutos</option>
+                            <select id="auto-lock-select" onchange="updateAutoLockSetting(this.value)" class="bg-slate-900 border border-slate-700 text-xs text-slate-300 rounded-lg p-1.5 focus:outline-none cursor-pointer">
+                                <option value="30000">30 Segundos</option>
+                                <option value="60000" selected>1 Minuto</option>
+                                <option value="300000">5 Minutos</option>
                             </select>
                         </div>
                     </div>
                 </div>
 
-                <!-- Gerenciamento -->
                 <div class="space-y-2.5 xs:space-y-3">
                     <h3 class="text-[11px] xs:text-xs font-semibold text-slate-400 uppercase tracking-wider">Gerenciamento</h3>
                     <div class="glass-card rounded-2xl divide-y divide-slate-800/60 overflow-hidden">
@@ -364,20 +325,9 @@
                             </div>
                             <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 shrink-0"></i>
                         </div>
-                        <div onclick="exportBackup()" class="p-3.5 xs:p-4 flex items-center justify-between cursor-pointer hover:bg-slate-800/40 transition">
-                            <div class="flex items-center gap-3">
-                                <i data-lucide="download" class="w-5 h-5 text-purple-400 shrink-0"></i>
-                                <div>
-                                    <p class="text-xs font-medium">Exportar Dados / Backup</p>
-                                    <p class="text-[10px] text-slate-400">Baixar cópia de segurança</p>
-                                </div>
-                            </div>
-                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 shrink-0"></i>
-                        </div>
                     </div>
                 </div>
 
-                <!-- Sobre & Privacidade -->
                 <div class="space-y-2.5 xs:space-y-3">
                     <h3 class="text-[11px] xs:text-xs font-semibold text-slate-400 uppercase tracking-wider">Privacidade</h3>
                     <div class="glass-card rounded-2xl p-3.5 xs:p-4 space-y-3">
@@ -385,37 +335,27 @@
                             <i data-lucide="shield-check" class="w-5 h-5 text-blue-400 mt-0.5 shrink-0"></i>
                             <div class="text-xs text-slate-300 leading-relaxed">
                                 <p class="font-semibold text-white">Arquitetura Zero-Knowledge</p>
-                                <p class="text-slate-400 text-[11px] mt-1">Seus arquivos e dados são mantidos exclusivamente armazenados na memória local criptografada do seu dispositivo. Nenhum dado é enviado para servidores externos.</p>
+                                <p class="text-slate-400 text-[11px] mt-1">Seus arquivos e dados são mantidos exclusivamente armazenados na memória local criptografada do seu dispositivo.</p>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="text-center pt-2">
-                    <p class="text-[10px] text-slate-500">Cofre Seguro v2.5.0 Professional • Build Protegido Android/iOS</p>
-                </div>
-
             </div>
         </section>
 
-        <!-- ================================================== -->
-        <!-- BOTÃO FLUTUANTE (FAB) PARA ADICIONAR RÁPIDO        -->
-        <!-- ================================================== -->
+        <!-- BOTÃO FLUTUANTE (FAB) -->
         <div id="fab-container" class="hidden absolute bottom-16 xs:bottom-20 right-4 xs:right-5 z-30">
             <button onclick="triggerImport()" class="w-12 h-12 xs:w-14 xs:h-14 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl flex items-center justify-center hover:scale-105 active:scale-95 transition border border-blue-400/30">
                 <i data-lucide="plus" class="w-5 h-5 xs:w-7 xs:h-7"></i>
             </button>
         </div>
 
-        <!-- Input de Arquivo Escondido -->
+        <!-- Inputs Escondidos -->
         <input type="file" id="file-input" class="hidden" multiple onchange="handleFileImport(event)">
-
-        <!-- Canvas Invisível para Capturar Fotos da Câmera -->
+        <input type="file" id="camera-native-input" class="hidden" accept="image/*" capture="environment" onchange="handleFileImport(event)">
         <canvas id="camera-canvas" class="hidden"></canvas>
 
-        <!-- ================================================== -->
-        <!-- NAVEGAÇÃO INFERIOR (BOTTOM TAB BAR)               -->
-        <!-- ================================================== -->
+        <!-- NAVEGAÇÃO INFERIOR -->
         <nav id="bottom-nav" class="hidden absolute bottom-0 inset-x-0 w-full glass border-t border-slate-800/80 px-4 xs:px-6 py-2 xs:py-2.5 flex justify-around items-center z-30">
             <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center gap-0.5 xs:gap-1 text-blue-500 transition">
                 <i data-lucide="layout-grid" class="w-4 h-4 xs:w-5 xs:h-5"></i>
@@ -431,35 +371,33 @@
             </button>
         </nav>
 
-        <!-- ================================================== -->
-        <!-- MODAIS E OVERLAYS                                 -->
-        <!-- ================================================== -->
-
         <!-- MODAL DE SOLICITAÇÃO DE PERMISSÃO DA CÂMERA -->
         <div id="camera-permission-modal" class="hidden absolute inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 xs:p-6">
             <div class="glass-card p-5 xs:p-6 rounded-3xl w-full max-w-xs text-center border border-slate-700/80 shadow-2xl flex flex-col items-center">
-                
                 <div class="w-14 h-14 bg-blue-600/10 border border-blue-500/20 rounded-2xl flex items-center justify-center mb-4 text-blue-400">
                     <i data-lucide="camera" class="w-7 h-7"></i>
                 </div>
 
                 <h4 class="text-base font-bold text-white mb-1">Acesso à Câmera</h4>
                 <p class="text-xs text-slate-400 mb-5 leading-relaxed">
-                    O Cofre Seguro precisa da sua permissão para tirar fotos e salvá-las diretamente na sua galeria criptografada local.
+                    O Cofre Seguro precisa da sua permissão para tirar fotos e salvá-las diretamente na sua galeria criptografada.
                 </p>
 
                 <div class="w-full space-y-2">
                     <button onclick="requestCameraAccess()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition border border-blue-400/30">
-                        Permitir Câmera
+                        Permitir e Abrir Câmera
                     </button>
-                    <button onclick="closeCameraPermissionModal()" class="w-full py-2.5 bg-slate-800/80 hover:bg-slate-700 text-slate-400 rounded-xl text-xs font-semibold transition">
-                        Agora Não
+                    <button onclick="triggerNativeCamera()" class="w-full py-2 bg-slate-800/80 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-medium transition">
+                        Usar Câmera Nativa do Aparelho
+                    </button>
+                    <button onclick="closeCameraPermissionModal()" class="w-full py-2 text-slate-500 text-xs font-medium hover:text-slate-400">
+                        Cancelar
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- TELA / MODAL DA CÂMERA AO VIVO -->
+        <!-- CÂMERA AO VIVO -->
         <div id="camera-modal" class="hidden absolute inset-0 z-50 bg-black flex flex-col justify-between p-4 w-full h-full">
             <div class="flex justify-between items-center z-10">
                 <span class="text-xs font-semibold text-white flex items-center gap-2">
@@ -470,12 +408,10 @@
                 </button>
             </div>
 
-            <!-- Transmissão do Vídeo -->
             <div class="relative flex-1 my-3 flex items-center justify-center overflow-hidden rounded-2xl bg-slate-900 border border-slate-800">
                 <video id="camera-video" autoplay playsinline class="w-full h-full object-cover"></video>
             </div>
 
-            <!-- Controles de Disparo -->
             <div class="flex justify-center items-center pb-2 z-10">
                 <button onclick="takePhoto()" class="w-16 h-16 rounded-full border-4 border-white bg-red-600 active:scale-90 transition shadow-lg flex items-center justify-center">
                     <div class="w-12 h-12 rounded-full bg-white/20"></div>
@@ -483,39 +419,34 @@
             </div>
         </div>
 
-        <!-- Modal de Preview de Mídia -->
+        <!-- PREVIEW DE MÍDIA -->
         <div id="preview-modal" class="hidden absolute inset-0 z-50 bg-black/95 flex flex-col justify-between p-3 xs:p-4 w-full h-full">
             <div class="flex justify-between items-center z-10">
                 <button onclick="closePreview()" class="p-2 text-white bg-slate-800/80 hover:bg-slate-700 rounded-full transition"><i data-lucide="x" class="w-5 h-5"></i></button>
-                <span id="preview-title" class="text-xs font-semibold text-slate-300 truncate max-w-[160px] xs:max-w-[220px] sm:max-w-[280px]"></span>
+                <span id="preview-title" class="text-xs font-semibold text-slate-300 truncate max-w-[160px]"></span>
                 <button onclick="deleteCurrentPreview()" class="p-2 text-red-400 bg-slate-800/80 hover:bg-slate-700 rounded-full transition"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
             </div>
-            <div id="preview-content" class="flex-1 flex items-center justify-center my-2 xs:my-4 overflow-hidden">
-                <!-- Conteúdo -->
-            </div>
-            <div class="text-center text-xs text-slate-500 pb-1 xs:pb-2" id="preview-info"></div>
+            <div id="preview-content" class="flex-1 flex items-center justify-center my-2 overflow-hidden"></div>
+            <div class="text-center text-xs text-slate-500 pb-1" id="preview-info"></div>
         </div>
 
-        <!-- Modal Lixeira -->
+        <!-- LIXEIRA -->
         <div id="trash-modal" class="hidden absolute inset-0 z-50 bg-slate-950/95 backdrop-blur-md p-4 xs:p-5 w-full h-full flex flex-col">
-            <div class="flex justify-between items-center mb-3 xs:mb-4 pb-2 border-b border-slate-800">
-                <h3 class="text-sm xs:text-base font-bold text-white flex items-center gap-2">
-                    <i data-lucide="trash-2" class="w-4 h-4 xs:w-5 xs:h-5 text-red-400"></i> Lixeira Protegida
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i data-lucide="trash-2" class="w-4 h-4 text-red-400"></i> Lixeira Protegida
                 </h3>
                 <button onclick="closeTrashModal()" class="p-1 text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            <div id="trash-list" class="flex-1 overflow-y-auto space-y-2 no-scrollbar">
-                <!-- Lixeira -->
-            </div>
+            <div id="trash-list" class="flex-1 overflow-y-auto space-y-2 no-scrollbar"></div>
         </div>
 
-        <!-- Modal de Progresso de Importação -->
-        <div id="progress-modal" class="hidden absolute inset-0 z-50 bg-black/80 flex items-center justify-center p-4 xs:p-6">
-            <div class="glass-card p-5 xs:p-6 rounded-2xl w-full max-w-xs text-center border border-slate-700">
-                <div class="w-8 h-8 xs:w-10 xs:h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3 xs:mb-4"></div>
-                <h4 class="text-xs xs:text-sm font-bold text-white mb-1">Criptografando...</h4>
-                <p class="text-[11px] xs:text-xs text-slate-400 mb-3">Armazenando em ambiente seguro</p>
-                <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+        <!-- PROGRESSO -->
+        <div id="progress-modal" class="hidden absolute inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+            <div class="glass-card p-5 rounded-2xl w-full max-w-xs text-center border border-slate-700">
+                <div class="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+                <h4 class="text-xs font-bold text-white mb-1">Criptografando...</h4>
+                <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mt-3">
                     <div id="import-progress-bar" class="bg-blue-500 h-full w-0 transition-all duration-200"></div>
                 </div>
             </div>
@@ -525,7 +456,6 @@
 
     <!-- SCRIPT DA APLICAÇÃO -->
     <script>
-        // ESTADO GLOBAL DO APLICATIVO
         const STATE = {
             pin: "1234",
             enteredPin: "",
@@ -534,23 +464,23 @@
             files: [],
             folders: ['Documentos Pessoais', 'Fotos Privadas', 'Viagens'],
             trash: [],
-            currentPreviewIndex: null
+            currentPreviewIndex: null,
+            autoLockTime: 60000 // 1 minuto por padrão (em ms)
         };
 
         let cameraStream = null;
+        let inactivityTimer = null;
 
-        // INICIALIZAÇÃO
         document.addEventListener("DOMContentLoaded", () => {
             lucide.createIcons();
             loadStateFromStorage();
+            setupInactivityListeners();
             
-            // Splash Screen de 1.8 segundos
             setTimeout(() => {
                 document.getElementById('splash-screen').classList.add('hidden');
                 document.getElementById('auth-screen').classList.remove('hidden');
             }, 1800);
 
-            // Bloqueio Automático ao minimizar ou trocar de aba
             document.addEventListener("visibilitychange", () => {
                 if (document.hidden && STATE.isUnlocked) {
                     lockVault();
@@ -558,13 +488,36 @@
             });
         });
 
-        // PERSISTÊNCIA NO LOCALSTORAGE
+        // MONITORAMENTO DE INATIVIDADE
+        function setupInactivityListeners() {
+            const events = ['mousemove', 'mousedown', 'keypress', 'touchstart', 'scroll', 'click'];
+            events.forEach(evt => {
+                window.addEventListener(evt, resetInactivityTimer, true);
+            });
+        }
+
+        function resetInactivityTimer() {
+            if (inactivityTimer) clearTimeout(inactivityTimer);
+            if (STATE.isUnlocked) {
+                inactivityTimer = setTimeout(() => {
+                    lockVault();
+                }, STATE.autoLockTime);
+            }
+        }
+
+        function updateAutoLockSetting(value) {
+            STATE.autoLockTime = parseInt(value, 10);
+            saveStateToStorage();
+            resetInactivityTimer();
+        }
+
         function saveStateToStorage() {
             try {
                 localStorage.setItem('cofre_files', JSON.stringify(STATE.files));
                 localStorage.setItem('cofre_trash', JSON.stringify(STATE.trash));
                 localStorage.setItem('cofre_folders', JSON.stringify(STATE.folders));
                 localStorage.setItem('cofre_pin', STATE.pin);
+                localStorage.setItem('cofre_autolock', STATE.autoLockTime.toString());
             } catch (e) {
                 alert("Limite de armazenamento do navegador atingido.");
             }
@@ -575,14 +528,19 @@
             const storedTrash = localStorage.getItem('cofre_trash');
             const storedFolders = localStorage.getItem('cofre_folders');
             const storedPin = localStorage.getItem('cofre_pin');
+            const storedAutoLock = localStorage.getItem('cofre_autolock');
 
             if (storedFiles) STATE.files = JSON.parse(storedFiles);
             if (storedTrash) STATE.trash = JSON.parse(storedTrash);
             if (storedFolders) STATE.folders = JSON.parse(storedFolders);
             if (storedPin) STATE.pin = storedPin;
+            if (storedAutoLock) {
+                STATE.autoLockTime = parseInt(storedAutoLock, 10);
+                const select = document.getElementById('auto-lock-select');
+                if (select) select.value = storedAutoLock;
+            }
         }
 
-        // AUTENTICAÇÃO E PIN
         function appendPin(num) {
             if (STATE.enteredPin.length < 4) {
                 STATE.enteredPin += num;
@@ -629,12 +587,14 @@
             document.getElementById('bottom-nav').classList.remove('hidden');
             document.getElementById('fab-container').classList.remove('hidden');
             renderDashboard();
+            resetInactivityTimer();
         }
 
         function lockVault() {
             STATE.isUnlocked = false;
             STATE.enteredPin = "";
             clearPin();
+            if (inactivityTimer) clearTimeout(inactivityTimer);
             closeLiveCamera();
             closeCameraPermissionModal();
             document.getElementById('main-vault').classList.add('hidden');
@@ -645,7 +605,6 @@
             document.getElementById('auth-screen').classList.remove('hidden');
         }
 
-        // GERENCIAMENTO DA INTERFACE
         function renderDashboard() {
             const photos = STATE.files.filter(f => f.type.startsWith('image/'));
             const videos = STATE.files.filter(f => f.type.startsWith('video/'));
@@ -655,27 +614,24 @@
             document.getElementById('count-videos').innerText = `${videos.length} itens`;
             document.getElementById('count-documents').innerText = `${docs.length} itens`;
 
-            // Pastas
             const foldersContainer = document.getElementById('folders-container');
             foldersContainer.innerHTML = STATE.folders.map(folder => `
                 <div class="glass-card p-2.5 xs:p-3 rounded-xl flex items-center justify-between border border-slate-800">
-                    <div class="flex items-center gap-2 xs:gap-2.5 overflow-hidden">
-                        <i data-lucide="folder" class="w-4 h-4 md:w-5 md:h-5 text-amber-400 shrink-0"></i>
+                    <div class="flex items-center gap-2 overflow-hidden">
+                        <i data-lucide="folder" class="w-4 h-4 text-amber-400 shrink-0"></i>
                         <span class="text-xs font-medium truncate text-slate-200">${folder}</span>
                     </div>
-                    <i data-lucide="more-vertical" class="w-3.5 h-3.5 xs:w-4 xs:h-4 text-slate-500 shrink-0"></i>
                 </div>
             `).join('');
 
-            // Recentes
             const recentContainer = document.getElementById('recent-files');
             if (STATE.files.length === 0) {
                 recentContainer.innerHTML = `<p class="text-xs text-slate-500 italic text-center py-4">Nenhum arquivo protegido ainda</p>`;
             } else {
                 recentContainer.innerHTML = STATE.files.slice(-4).reverse().map((file) => `
-                    <div onclick="openPreview(${STATE.files.indexOf(file)})" class="glass-card p-2.5 xs:p-3 rounded-xl flex items-center justify-between cursor-pointer hover:bg-slate-800/50 transition">
-                        <div class="flex items-center gap-2.5 xs:gap-3 overflow-hidden">
-                            <div class="p-1.5 xs:p-2 rounded-lg bg-slate-800 text-blue-400 shrink-0">
+                    <div onclick="openPreview(${STATE.files.indexOf(file)})" class="glass-card p-2.5 rounded-xl flex items-center justify-between cursor-pointer hover:bg-slate-800/50 transition">
+                        <div class="flex items-center gap-2.5 overflow-hidden">
+                            <div class="p-1.5 rounded-lg bg-slate-800 text-blue-400 shrink-0">
                                 <i data-lucide="${getFileIcon(file.type)}" class="w-4 h-4"></i>
                             </div>
                             <div class="truncate">
@@ -683,7 +639,6 @@
                                 <p class="text-[10px] text-slate-500">${formatSize(file.size)}</p>
                             </div>
                         </div>
-                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-600 shrink-0"></i>
                     </div>
                 `).join('');
             }
@@ -695,15 +650,13 @@
         function updateStorageBar() {
             const totalSize = STATE.files.reduce((acc, f) => acc + f.size, 0);
             const totalMB = (totalSize / (1024 * 1024)).toFixed(1);
-            const maxMB = 50;
-            const percentage = Math.min(100, Math.round((totalMB / maxMB) * 100));
+            const percentage = Math.min(100, Math.round((totalMB / 50) * 100));
 
             document.getElementById('storage-bar').style.width = `${percentage}%`;
             document.getElementById('storage-percentage').innerText = `${percentage}%`;
             document.getElementById('storage-used').innerText = `Usado: ${totalMB} MB`;
         }
 
-        // TABS DE NAVEGAÇÃO
         function switchTab(tab) {
             STATE.activeTab = tab;
             const dash = document.getElementById('main-vault');
@@ -717,7 +670,6 @@
                 navDash.classList.add('text-blue-500');
                 navDash.classList.remove('text-slate-400');
                 navSet.classList.add('text-slate-400');
-                navSet.classList.remove('text-blue-500');
                 renderDashboard();
             } else if (tab === 'settings') {
                 dash.classList.add('hidden');
@@ -725,16 +677,10 @@
                 navSet.classList.add('text-blue-500');
                 navSet.classList.remove('text-slate-400');
                 navDash.classList.add('text-slate-400');
-                navDash.classList.remove('text-blue-500');
             }
         }
 
-        // PERMISSÃO E CÂMERA AO VIVO
         function openLiveCamera() {
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                alert("O acesso à câmera requer conexão segura (HTTPS ou servidor local).");
-                return;
-            }
             document.getElementById('camera-permission-modal').classList.remove('hidden');
             lucide.createIcons();
         }
@@ -743,29 +689,30 @@
             document.getElementById('camera-permission-modal').classList.add('hidden');
         }
 
+        function triggerNativeCamera() {
+            closeCameraPermissionModal();
+            document.getElementById('camera-native-input').click();
+        }
+
         async function requestCameraAccess() {
             closeCameraPermissionModal();
 
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                alert("Seu navegador não suporta streaming ao vivo por arquivo local. Abrindo a câmera do seu aparelho...");
+                triggerNativeCamera();
+                return;
+            }
+
             try {
-                const constraints = {
-                    video: { facingMode: { ideal: "environment" } },
-                    audio: false
-                };
+                const constraints = { video: { facingMode: { ideal: "environment" } }, audio: false };
                 cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
                 const video = document.getElementById('camera-video');
                 video.srcObject = cameraStream;
                 document.getElementById('camera-modal').classList.remove('hidden');
             } catch (err) {
-                console.error("Erro no acesso à câmera:", err);
-                if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-                    alert("Permissão negada.\n\nPara permitir o acesso, clique no ícone de configurações ou cadeado na barra do seu navegador e altere a opção da Câmera para 'Permitir'.");
-                } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
-                    alert("Nenhuma câmera foi encontrada neste dispositivo.");
-                } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
-                    alert("A câmera já está sendo usada por outro aplicativo.");
-                } else {
-                    alert("Não foi possível acessar a câmera: " + err.message);
-                }
+                console.error("Erro na câmera:", err);
+                alert("O acesso ao vivo foi bloqueado pelo navegador. Abrindo câmera nativa do dispositivo.");
+                triggerNativeCamera();
             }
         }
 
@@ -802,18 +749,10 @@
             saveStateToStorage();
             closeLiveCamera();
             renderDashboard();
-            
-            if (!document.getElementById('category-view').classList.contains('hidden')) {
-                openCategory(currentCategory);
-            }
         }
 
-        // IMPORTAÇÃO DE ARQUIVOS
         function triggerImport() {
-            const input = document.getElementById('file-input');
-            input.removeAttribute('capture');
-            input.removeAttribute('accept');
-            input.click();
+            document.getElementById('file-input').click();
         }
 
         function handleFileImport(event) {
@@ -832,7 +771,7 @@
                     STATE.files.push({
                         id: Date.now() + Math.random(),
                         name: file.name,
-                        type: file.type || 'document',
+                        type: file.type || 'image/jpeg',
                         size: file.size,
                         data: e.target.result,
                         date: new Date().toLocaleDateString('pt-BR')
@@ -847,9 +786,6 @@
                             progressModal.classList.add('hidden');
                             progressBar.style.width = '0%';
                             renderDashboard();
-                            if (!document.getElementById('category-view').classList.contains('hidden')) {
-                                openCategory(currentCategory);
-                            }
                         }, 500);
                     }
                 };
@@ -857,11 +793,7 @@
             });
         }
 
-        // CATEGORIAS
-        let currentCategory = '';
-
         function openCategory(cat) {
-            currentCategory = cat;
             const view = document.getElementById('category-view');
             const title = document.getElementById('category-title');
             const content = document.getElementById('category-content');
@@ -881,66 +813,22 @@
             }
 
             if (filteredFiles.length === 0) {
-                content.innerHTML = `
-                    <div class="flex flex-col items-center justify-center h-64 text-slate-500">
-                        <i data-lucide="folder-open" class="w-12 h-12 mb-2 stroke-1"></i>
-                        <p class="text-xs">Nenhum arquivo nesta categoria</p>
-                    </div>
-                `;
+                content.innerHTML = `<div class="flex flex-col items-center justify-center h-64 text-slate-500"><p class="text-xs">Nenhum arquivo encontrado</p></div>`;
             } else {
-                if (cat === 'photos') {
-                    content.innerHTML = `
-                        <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                            ${filteredFiles.map((file) => `
-                                <div onclick="openPreviewById('${file.id}')" class="aspect-square bg-slate-800 rounded-xl overflow-hidden border border-slate-800 cursor-pointer hover:opacity-80 transition">
-                                    <img src="${file.data}" class="w-full h-full object-cover">
-                                </div>
-                            `).join('')}
-                        </div>
-                    `;
-                } else {
-                    content.innerHTML = `
-                        <div class="space-y-2">
-                            ${filteredFiles.map((file) => `
-                                <div onclick="openPreviewById('${file.id}')" class="glass-card p-2.5 xs:p-3 rounded-xl flex items-center justify-between cursor-pointer hover:bg-slate-800/60 transition">
-                                    <div class="flex items-center gap-2.5 xs:gap-3 overflow-hidden">
-                                        <div class="p-2 xs:p-2.5 rounded-lg bg-slate-800 text-blue-400 shrink-0">
-                                            <i data-lucide="${getFileIcon(file.type)}" class="w-4 h-4 xs:w-5 xs:h-5"></i>
-                                        </div>
-                                        <div class="truncate">
-                                            <p class="text-xs font-medium text-slate-200 truncate">${file.name}</p>
-                                            <p class="text-[10px] text-slate-500">${formatSize(file.size)} •${file.date}</p>
-                                        </div>
-                                    </div>
-                                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-600 shrink-0"></i>
-                                </div>
-                            `).join('')}
-                        </div>
-                    `;
-                }
+                content.innerHTML = `<div class="grid grid-cols-3 gap-2">${filteredFiles.map(file => `
+                    <div onclick="openPreviewById('${file.id}')" class="aspect-square bg-slate-800 rounded-xl overflow-hidden cursor-pointer">
+                        <img src="${file.data}" class="w-full h-full object-cover">
+                    </div>
+                `).join('')}</div>`;
             }
             lucide.createIcons();
         }
 
-        function closeCategoryView() {
-            document.getElementById('category-view').classList.add('hidden');
-        }
+        function closeCategoryView() { document.getElementById('category-view').classList.add('hidden'); }
 
-        // PREVIEW
         function openPreview(index) {
             STATE.currentPreviewIndex = index;
             const file = STATE.files[index];
-            showPreviewModal(file);
-        }
-
-        function openPreviewById(id) {
-            const index = STATE.files.findIndex(f => f.id == id);
-            if (index !== -1) {
-                openPreview(index);
-            }
-        }
-
-        function showPreviewModal(file) {
             const modal = document.getElementById('preview-modal');
             const content = document.getElementById('preview-content');
             document.getElementById('preview-title').innerText = file.name;
@@ -948,26 +836,19 @@
 
             if (file.type.startsWith('image/')) {
                 content.innerHTML = `<img src="${file.data}" class="max-h-full max-w-full object-contain rounded-lg">`;
-            } else if (file.type.startsWith('video/')) {
-                content.innerHTML = `<video src="${file.data}" controls class="max-h-full max-w-full rounded-lg"></video>`;
             } else {
-                content.innerHTML = `
-                    <div class="text-center p-5 xs:p-6 glass-card rounded-2xl max-w-xs">
-                        <i data-lucide="file-text" class="w-12 h-12 xs:w-16 xs:h-16 text-blue-400 mx-auto mb-3"></i>
-                        <p class="text-xs font-semibold text-white mb-1 truncate">${file.name}</p>
-                        <p class="text-[10px] text-slate-400 mb-4">Documento Protegido</p>
-                        <a href="${file.data}" download="${file.name}" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-medium inline-block hover:bg-blue-500 transition">Exportar Arquivo</a>
-                    </div>
-                `;
+                content.innerHTML = `<a href="${file.data}" download="${file.name}" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-medium">Exportar Arquivo</a>`;
             }
-
             modal.classList.remove('hidden');
             lucide.createIcons();
         }
 
-        function closePreview() {
-            document.getElementById('preview-modal').classList.add('hidden');
+        function openPreviewById(id) {
+            const index = STATE.files.findIndex(f => f.id == id);
+            if (index !== -1) openPreview(index);
         }
+
+        function closePreview() { document.getElementById('preview-modal').classList.add('hidden'); }
 
         function deleteCurrentPreview() {
             if (STATE.currentPreviewIndex !== null) {
@@ -977,14 +858,10 @@
                     saveStateToStorage();
                     closePreview();
                     renderDashboard();
-                    if (!document.getElementById('category-view').classList.contains('hidden')) {
-                        openCategory(currentCategory);
-                    }
                 }
             }
         }
 
-        // LIXEIRA
         function openTrashModal() {
             const modal = document.getElementById('trash-modal');
             const list = document.getElementById('trash-list');
@@ -993,15 +870,9 @@
                 list.innerHTML = `<p class="text-xs text-slate-500 text-center py-8">Lixeira vazia</p>`;
             } else {
                 list.innerHTML = STATE.trash.map((file, idx) => `
-                    <div class="glass-card p-2.5 xs:p-3 rounded-xl flex items-center justify-between">
-                        <div class="truncate max-w-[140px] xs:max-w-[180px]">
-                            <p class="text-xs font-medium text-slate-200 truncate">${file.name}</p>
-                            <p class="text-[10px] text-slate-500">${formatSize(file.size)}</p>
-                        </div>
-                        <div class="flex gap-1.5 xs:gap-2">
-                            <button onclick="restoreFromTrash(${idx})" class="p-1.5 text-emerald-400 hover:bg-slate-800 rounded-lg transition" title="Restaurar"><i data-lucide="rotate-ccw" class="w-4 h-4"></i></button>
-                            <button onclick="deletePermanently(${idx})" class="p-1.5 text-red-400 hover:bg-slate-800 rounded-lg transition" title="Excluir"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                        </div>
+                    <div class="glass-card p-2.5 rounded-xl flex items-center justify-between">
+                        <p class="text-xs font-medium text-slate-200 truncate">${file.name}</p>
+                        <button onclick="restoreFromTrash(${idx})" class="p-1.5 text-emerald-400 hover:bg-slate-800 rounded-lg"><i data-lucide="rotate-ccw" class="w-4 h-4"></i></button>
                     </div>
                 `).join('');
             }
@@ -1009,9 +880,7 @@
             lucide.createIcons();
         }
 
-        function closeTrashModal() {
-            document.getElementById('trash-modal').classList.add('hidden');
-        }
+        function closeTrashModal() { document.getElementById('trash-modal').classList.add('hidden'); }
 
         function restoreFromTrash(index) {
             const file = STATE.trash.splice(index, 1)[0];
@@ -1021,15 +890,6 @@
             renderDashboard();
         }
 
-        function deletePermanently(index) {
-            if (confirm("Excluir permanentemente este arquivo?")) {
-                STATE.trash.splice(index, 1);
-                saveStateToStorage();
-                openTrashModal();
-            }
-        }
-
-        // UTILS
         function promptCreateFolder() {
             const name = prompt("Nome da nova pasta:");
             if (name && name.trim()) {
@@ -1044,31 +904,16 @@
             if (newPin && newPin.length === 4 && !isNaN(newPin)) {
                 STATE.pin = newPin;
                 saveStateToStorage();
-                alert(`PIN alterado com sucesso para: ${newPin}`);
-            } else if (newPin) {
-                alert("O PIN deve conter exatamente 4 números.");
+                alert(`PIN alterado para: ${newPin}`);
             }
         }
 
-        function exportBackup() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(STATE));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `cofre_seguro_backup_${Date.now()}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-        }
-
-        function showRecoveryModal() {
-            alert("A senha provisória inicial do sistema é 1234. Caso tenha alterado e esquecido, limpe os dados do navegador para redefinir.");
-        }
+        function showRecoveryModal() { alert("Senha padrão provisória: 1234"); }
 
         function getFileIcon(type) {
             if (type.startsWith('image/')) return 'image';
             if (type.startsWith('video/')) return 'film';
-            if (type.includes('pdf')) return 'file-text';
-            return 'file';
+            return 'file-text';
         }
 
         function formatSize(bytes) {
@@ -1081,30 +926,14 @@
 
         function handleSearch(query) {
             const term = query.toLowerCase().trim();
-            if (!term) {
-                renderDashboard();
-                return;
-            }
+            if (!term) { renderDashboard(); return; }
             const filtered = STATE.files.filter(f => f.name.toLowerCase().includes(term));
             const recentContainer = document.getElementById('recent-files');
-            
-            if (filtered.length === 0) {
-                recentContainer.innerHTML = `<p class="text-xs text-slate-500 italic text-center py-4">Nenhum arquivo encontrado</p>`;
-            } else {
-                recentContainer.innerHTML = filtered.map((file) => `
-                    <div onclick="openPreview(${STATE.files.indexOf(file)})" class="glass-card p-2.5 xs:p-3 rounded-xl flex items-center justify-between cursor-pointer">
-                        <div class="flex items-center gap-2.5 xs:gap-3 overflow-hidden">
-                            <div class="p-1.5 xs:p-2 rounded-lg bg-slate-800 text-blue-400">
-                                <i data-lucide="${getFileIcon(file.type)}" class="w-4 h-4"></i>
-                            </div>
-                            <div class="truncate">
-                                <p class="text-xs font-medium text-slate-200 truncate">${file.name}</p>
-                                <p class="text-[10px] text-slate-500">${formatSize(file.size)}</p>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            }
+            recentContainer.innerHTML = filtered.map((file) => `
+                <div onclick="openPreview(${STATE.files.indexOf(file)})" class="glass-card p-2.5 rounded-xl flex items-center justify-between cursor-pointer">
+                    <p class="text-xs font-medium text-slate-200 truncate">${file.name}</p>
+                </div>
+            `).join('');
             lucide.createIcons();
         }
     </script>
