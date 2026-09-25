@@ -410,6 +410,9 @@
         <!-- Input de Arquivo Escondido -->
         <input type="file" id="file-input" class="hidden" multiple onchange="handleFileImport(event)">
 
+        <!-- Canvas Invisível para Capturar Fotos da Câmera -->
+        <canvas id="camera-canvas" class="hidden"></canvas>
+
         <!-- ================================================== -->
         <!-- NAVEGAÇÃO INFERIOR (BOTTOM TAB BAR)               -->
         <!-- ================================================== -->
@@ -418,7 +421,7 @@
                 <i data-lucide="layout-grid" class="w-4 h-4 xs:w-5 xs:h-5"></i>
                 <span class="text-[9px] xs:text-[10px] font-medium">Cofre</span>
             </button>
-            <button onclick="triggerCamera()" class="flex flex-col items-center gap-0.5 xs:gap-1 text-slate-400 hover:text-slate-200 transition">
+            <button onclick="openLiveCamera()" class="flex flex-col items-center gap-0.5 xs:gap-1 text-slate-400 hover:text-slate-200 transition">
                 <i data-lucide="camera" class="w-4 h-4 xs:w-5 xs:h-5"></i>
                 <span class="text-[9px] xs:text-[10px] font-medium">Câmera</span>
             </button>
@@ -431,6 +434,30 @@
         <!-- ================================================== -->
         <!-- MODAIS E OVERLAYS                                 -->
         <!-- ================================================== -->
+
+        <!-- TELA / MODAL DA CÂMERA AO VIVO -->
+        <div id="camera-modal" class="hidden absolute inset-0 z-50 bg-black flex flex-col justify-between p-4 w-full h-full">
+            <div class="flex justify-between items-center z-10">
+                <span class="text-xs font-semibold text-white flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Câmera ao Vivo
+                </span>
+                <button onclick="closeLiveCamera()" class="p-2 text-white bg-slate-800/80 hover:bg-slate-700 rounded-full transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Transmissão do Vídeo -->
+            <div class="relative flex-1 my-3 flex items-center justify-center overflow-hidden rounded-2xl bg-slate-900 border border-slate-800">
+                <video id="camera-video" autoplay playsinline class="w-full h-full object-cover"></video>
+            </div>
+
+            <!-- Controles de Disparo -->
+            <div class="flex justify-center items-center pb-2 z-10">
+                <button onclick="takePhoto()" class="w-16 h-16 rounded-full border-4 border-white bg-red-600 active:scale-90 transition shadow-lg flex items-center justify-center">
+                    <div class="w-12 h-12 rounded-full bg-white/20"></div>
+                </button>
+            </div>
+        </div>
 
         <!-- Modal de Preview de Mídia -->
         <div id="preview-modal" class="hidden absolute inset-0 z-50 bg-black/95 flex flex-col justify-between p-3 xs:p-4 w-full h-full">
@@ -485,6 +512,8 @@
             trash: [],
             currentPreviewIndex: null
         };
+
+        let cameraStream = null;
 
         // INICIALIZAÇÃO
         document.addEventListener("DOMContentLoaded", () => {
@@ -582,6 +611,7 @@
             STATE.isUnlocked = false;
             STATE.enteredPin = "";
             clearPin();
+            closeLiveCamera();
             document.getElementById('main-vault').classList.add('hidden');
             document.getElementById('settings-view').classList.add('hidden');
             document.getElementById('category-view').classList.add('hidden');
@@ -674,18 +704,67 @@
             }
         }
 
-        // IMPORTAÇÃO
+        // CÂMERA AO VIVO
+        async function openLiveCamera() {
+            try {
+                const constraints = {
+                    video: { facingMode: { ideal: "environment" } },
+                    audio: false
+                };
+                cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+                const video = document.getElementById('camera-video');
+                video.srcObject = cameraStream;
+                document.getElementById('camera-modal').classList.remove('hidden');
+            } catch (err) {
+                alert("Não foi possível acessar a câmera ao vivo. Verifique as permissões do seu navegador.");
+                console.error(err);
+            }
+        }
+
+        function closeLiveCamera() {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+            document.getElementById('camera-modal').classList.add('hidden');
+        }
+
+        function takePhoto() {
+            const video = document.getElementById('camera-video');
+            const canvas = document.getElementById('camera-canvas');
+            if (!video.videoWidth) return;
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+            const sizeInBytes = Math.round((dataUrl.length * 3) / 4);
+
+            STATE.files.push({
+                id: Date.now() + Math.random(),
+                name: `Foto_${new Date().toISOString().slice(0,10)}_${Math.floor(Math.random()*1000)}.jpg`,
+                type: 'image/jpeg',
+                size: sizeInBytes,
+                data: dataUrl,
+                date: new Date().toLocaleDateString('pt-BR')
+            });
+
+            saveStateToStorage();
+            closeLiveCamera();
+            renderDashboard();
+            
+            if (!document.getElementById('category-view').classList.contains('hidden')) {
+                openCategory(currentCategory);
+            }
+        }
+
+        // IMPORTAÇÃO DE ARQUIVOS
         function triggerImport() {
             const input = document.getElementById('file-input');
             input.removeAttribute('capture');
             input.removeAttribute('accept');
-            input.click();
-        }
-
-        function triggerCamera() {
-            const input = document.getElementById('file-input');
-            input.setAttribute('capture', 'environment');
-            input.setAttribute('accept', 'image/*');
             input.click();
         }
 
