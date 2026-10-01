@@ -118,7 +118,7 @@
             
             <div class="absolute bottom-6 md:bottom-8 flex items-center gap-2 text-[11px] md:text-xs text-slate-500">
                 <i data-lucide="lock" class="w-3.5 h-3.5"></i>
-                <span>Criptografia Local de Ponta a Ponta • v2.6.0</span>
+                <span>Criptografia Local de Ponta a Ponta • v2.6.1</span>
             </div>
         </section>
 
@@ -898,13 +898,37 @@
             }
         }
 
+        // FUNÇÃO CORRIGIDA DE EXPORTAÇÃO (CONVERTE BASE64 EM BLOB PARA NAVEGADORES MOBILE/DESKTOP)
         function downloadFile(file) {
-            const a = document.createElement('a');
-            a.href = file.data;
-            a.download = file.name;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+            try {
+                const arr = file.data.split(',');
+                const mime = arr[0].match(/:(.*?);/)[1];
+                const bstr = atob(arr[1]);
+                let n = bstr.length;
+                const u8arr = new Uint8Array(n);
+                
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                
+                const blob = new Blob([u8arr], { type: mime });
+                const blobUrl = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = file.name;
+                document.body.appendChild(a);
+                a.click();
+                
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(blobUrl);
+                }, 1000);
+            } catch (err) {
+                console.error("Erro no download:", err);
+                alert("Não foi possível exportar o arquivo automaticamente neste navegador.");
+            }
         }
 
         function deleteCurrentPreview() {
